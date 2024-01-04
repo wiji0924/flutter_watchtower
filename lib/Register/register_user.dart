@@ -6,7 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:watchtower/Services/device_endpoint_config.dart';
 import 'package:crypto/crypto.dart';
+import 'package:provider/provider.dart';
 
+import 'package:watchtower/Models/backend_url.dart';
 import 'dart:convert';
 
 import '../main.dart';
@@ -40,11 +42,11 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
     var Password = PasswordController.text;
     var ConfirmPassword = ConfirmPasswordController.text;
 
-    var endpoint = await getBackEndUrl();
-
+    final urlModel = Provider.of<UrlModel>(context, listen: false);
+    final endpoint = urlModel.url;
 
     if(Password == ConfirmPassword){
-      var url = Uri.parse('http://$endpoint:8090/register');
+      var url = Uri.parse('$endpoint/register');
 
       var bytes = utf8.encode(Password);
       var hash = md5.convert(bytes);
