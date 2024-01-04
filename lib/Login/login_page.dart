@@ -6,6 +6,9 @@ import 'package:watchtower/Services/device_endpoint_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:watchtower/Services/username_data.dart';
+import 'package:watchtower/Models/backend_url.dart';
+import 'package:provider/provider.dart';
+
 import 'dart:convert';
 
 import '../main.dart';
@@ -150,10 +153,11 @@ class _LoginPageState extends State<LoginPage> {
                     print(UsernameTextBoxController.text);
                     print(PasswordTextBoxController.text);
 
-                    var endpoint = await getBackEndUrl();
 
+                      final urlModel = Provider.of<UrlModel>(context, listen:false);
+                      final endpoint = urlModel.url;
 
-                      var url = Uri.parse('http://$endpoint:8090/login');
+                      var url = Uri.parse('$endpoint/login');
                       //var url = Uri.parse('http://192.168.43.123:8081/login');
 
                       print(url);
@@ -220,23 +224,23 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                width: 250,
-                height: 50,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    Navigator.of(context).pushNamed('settings');
-                  },
-                  icon: const Icon(Icons.settings),
-                  label: Text(
-                    "Configure Settings",
-                    style: GoogleFonts.audiowide(color:Colors.black, fontSize: 15),
-                  ),
-                ),
-              ),
+              // const SizedBox(
+              //   height: 30,
+              // ),
+              // SizedBox(
+              //   width: 250,
+              //   height: 50,
+              //   child: ElevatedButton.icon(
+              //     onPressed: () async {
+              //       Navigator.of(context).pushNamed('settings');
+              //     },
+              //     icon: const Icon(Icons.settings),
+              //     label: Text(
+              //       "Configure Settings",
+              //       style: GoogleFonts.audiowide(color:Colors.black, fontSize: 15),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: 30,
               ),
@@ -268,6 +272,7 @@ void _onLoading(BuildContext context) {
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
+      final endpoint = Provider.of<UrlModel>(context);
       return Dialog(
         child: SizedBox(
           height: 60,
