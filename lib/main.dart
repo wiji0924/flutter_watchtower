@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:watchtower/Login/login_page.dart';
 import 'package:watchtower/Logout/loading_page.dart';
 import 'package:watchtower/Register/register_user.dart';
+import 'package:provider/provider.dart';
 
+import 'Models/backend_url.dart';
 import 'Common/Admin/create_userpage.dart';
 import 'Common/dashboard_page.dart';
-import 'Settings/device_config.dart';
+// import 'Settings/device_config.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 Future<void> main() async{
@@ -29,7 +31,11 @@ Future<void> main() async{
 
 
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  // runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+     create: (context) => UrlModel(),
+     child: const MyApp(),
+   ));
 }
 
 final GlobalKey<ScaffoldMessengerState> snackbarKey =
@@ -50,7 +56,6 @@ class MyApp extends StatelessWidget {
       ),
       home: const LoginPage(),
       routes: {
-        'settings': (context) => DeviceConfigPage(),
         'register': (context) => RegisterUserPage(),
         'dashboard': (context) => DashBoardPage(),
         'loadingpage': (context) => WhiteBackgroundScreen(),
